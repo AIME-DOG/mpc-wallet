@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <springProperty name="LOG_NAME_PREFIX" source="spring.application.name"/>
+
+    <springProfile name="local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>debug</level>
+            </filter>
+        </appender>
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>INFO</level>
+            </filter>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+        <logger name="com.alibaba.nacos.client.config.impl" level="warn" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="test">
+        <springProperty name="LOG_FILE_HOME" source="logging.file.path"/>
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>debug</level>
+            </filter>
+        </appender>
+        <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_FILE_HOME}/${LOG_NAME_PREFIX}-info.log</File>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>INFO</level>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_FILE_HOME}/backup/${LOG_NAME_PREFIX}-info.%d{yyyy-MM-dd}.log
+                </FileNamePattern>
+            </rollingPolicy>
+        </appender>
+        <appender name="FILE_ERROR"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_FILE_HOME}/${LOG_NAME_PREFIX}-error.log</File>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_FILE_HOME}/backup/${LOG_NAME_PREFIX}-error.%d{yyyy-MM-dd}.log
+                </FileNamePattern>
+            </rollingPolicy>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE_INFO"/>
+            <appender-ref ref="FILE_ERROR"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="sandbox">
+        <springProperty name="LOG_FILE_HOME" source="logging.file.path"/>
+        <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_FILE_HOME}/${LOG_NAME_PREFIX}-info.log</File>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>INFO</level>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_FILE_HOME}/backup/${LOG_NAME_PREFIX}-info.%d{yyyy-MM-dd}.log
+                </FileNamePattern>
+            </rollingPolicy>
+        </appender>
+        <appender name="FILE_ERROR"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_FILE_HOME}/${LOG_NAME_PREFIX}-error.log</File>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_FILE_HOME}/backup/${LOG_NAME_PREFIX}-error.%d{yyyy-MM-dd}.log
+                </FileNamePattern>
+            </rollingPolicy>
+        </appender>
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>debug</level>
+            </filter>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="FILE_INFO"/>
+            <appender-ref ref="FILE_ERROR"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+        <logger name="com.alibaba.nacos.client.config.impl" level="warn" additivity="false">
+            <appender-ref ref="FILE_INFO"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="pre">
+        <springProperty name="LOG_FILE_HOME" source="logging.file.path"/>
+        <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_FILE_HOME}/${LOG_NAME_PREFIX}-info.log</File>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>INFO</level>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_FILE_HOME}/backup/${LOG_NAME_PREFIX}-info.%d{yyyy-MM-dd}.log
+                </FileNamePattern>
+            </rollingPolicy>
+        </appender>
+        <appender name="FILE_ERROR"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_FILE_HOME}/${LOG_NAME_PREFIX}-error.log</File>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_FILE_HOME}/backup/${LOG_NAME_PREFIX}-error.%d{yyyy-MM-dd}.log
+                </FileNamePattern>
+            </rollingPolicy>
+        </appender>
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>debug</level>
+            </filter>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="FILE_INFO"/>
+            <appender-ref ref="FILE_ERROR"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+        <logger name="com.alibaba.nacos.client.config.impl" level="warn" additivity="false">
+            <appender-ref ref="FILE_INFO"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="prod">
+        <springProperty name="LOG_FILE_HOME" source="logging.file.path"/>
+        <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_FILE_HOME}/${LOG_NAME_PREFIX}-info.log</File>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>INFO</level>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_FILE_HOME}/backup/${LOG_NAME_PREFIX}-info.%d{yyyy-MM-dd}.log
+                </FileNamePattern>
+            </rollingPolicy>
+        </appender>
+        <appender name="FILE_ERROR"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_FILE_HOME}/${LOG_NAME_PREFIX}-error.log</File>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <FileNamePattern>${LOG_FILE_HOME}/backup/${LOG_NAME_PREFIX}-error.%d{yyyy-MM-dd}.log
+                </FileNamePattern>
+            </rollingPolicy>
+        </appender>
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread] [%X{traceId},%X{spanId}] %logger{5}[%L] %msg%n
+                </pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>debug</level>
+            </filter>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="FILE_INFO"/>
+            <appender-ref ref="FILE_ERROR"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+        <logger name="com.alibaba.nacos.client.config.impl" level="warn" additivity="false">
+            <appender-ref ref="FILE_INFO"/>
+        </logger>
+    </springProfile>
+</configuration>

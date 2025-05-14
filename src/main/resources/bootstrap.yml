@@ -1,0 +1,69 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: mpc-wallet
+  messages:
+    encoding: UTF-8
+    basename: i18n/message
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://<Host>:<Port>/<DB>?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useAffectedRows=true
+    username: # 数据库登录名
+    password: # 数据库登录密码
+    druid:
+      filters: stat
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+    type: com.alibaba.druid.pool.DruidDataSource
+  profiles:
+    active: dev
+
+
+privy:
+  account:  # 登录账号
+  host: https://auth.privy.io # API Host
+  app-id:  # APP ID
+  app-secret: # APP Secret
+  public-key: # Public Key
+  issuer: "privy.io"
+  webhook-user-signing-key: # WebHook signing key
+
+
+
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+logging:
+  level:
+    com.alibaba.nacos.client.config.impl: WARN
+  file:
+    path: /data/logs
+
+
+knife4j:
+  enable: true
+
+management:
+  server:
+    port: ${MANAGEMENT_PORT:${server.port}}
+  endpoint:
+    health:
+      show-details: always
