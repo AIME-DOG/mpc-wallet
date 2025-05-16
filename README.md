@@ -69,7 +69,7 @@ AIME uses JUP's core API to build the user's transaction into unsignData, then s
 ## install
 
 ### required
-1. MySql(本示例版本8.0.34)
+1. MySql(demo version of mysql 8.0.34)
 
 
 ### build & install
@@ -144,12 +144,12 @@ privy:
 ```
 
 
-### 功能特点
+### Functional
 1. Authenticate users.
 2. Webhook
    Supports events: `user.created` (user creation) and `user.wallet_created` (wallet creation).
 
-### 注意事项
+### Cautions
 1. The Spring Boot version for this project is 3.0.6.
 2. The JDK version must be 17.
 3. MySQL must be version 8 or above.
